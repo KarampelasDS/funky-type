@@ -1,0 +1,8 @@
+.container {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
+}
