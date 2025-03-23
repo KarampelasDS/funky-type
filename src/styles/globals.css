@@ -3,6 +3,8 @@
 :root {
   --background: #313144;
   --foreground: #ffffff;
+  --modebar-background: #232331;
+  --modebar-selected: #00a5cf;
 }
 
 body {

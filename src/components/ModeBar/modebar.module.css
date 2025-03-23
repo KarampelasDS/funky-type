@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Pontano+Sans:wght@300..700&display=swap");
+
+.container {
+  z-index: 3;
+  font-family: Pontano Sans;
+  font-size: 2rem;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modebar {
+  background-color: var(--modebar-background);
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  font-weight: 100;
+  width: fit-content;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  z-index: 1;
+}
+
+.modebar ul {
+  display: flex;
+  gap: 2rem;
+}
+
+.modebar ul li {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 200ms ease-out;
+}
+
+.selected {
+  color: var(--modebar-selected);
+}
