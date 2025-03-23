@@ -5,6 +5,7 @@
   --foreground: #ffffff;
   --modebar-background: #232331;
   --modebar-selected: #00a5cf;
+  --typing-box: rgba(255, 255, 255, 18%);
 }
 
 body {
