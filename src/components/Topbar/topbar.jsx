@@ -13,7 +13,6 @@ export default function Topbar() {
         width={150}
         height={150}
       />
-      <ModeBar />
       <FaCog size={40} />
     </div>
   );

@@ -19,6 +19,9 @@
   display: flex;
   flex-direction: column; /* Ensure consistent vertical alignment */
   justify-content: space-between; /* Prevent shifting when lines wrap */
+  max-width: 60rem; /* Set a fixed width to prevent dynamic wrapping */
+  height: 15rem; /* Ensure consistent height */
+  overflow: hidden; /* Prevent overflow */
 }
 
 .staticText {
@@ -33,16 +36,23 @@
   font-family: inherit;
   min-height: 10rem; /* Ensure consistent height to prevent layout shifts */
   visibility: visible; /* Ensure text is always rendered */
-  height: auto; /* Allow dynamic height but prevent layout shifts */
+  height: 100%; /* Match the height of the typing box */
   line-height: 1.5; /* Match the line height of the typing box */
+  word-wrap: break-word; /* Break long words to prevent overflow */
+  overflow-wrap: break-word; /* Ensure long words wrap properly */
+  display: flex; /* Use flexbox for consistent alignment */
+  flex-wrap: wrap; /* Allow wrapping of text */
+  align-content: flex-start; /* Align text to the top */
 }
 
 .correct {
   color: #4caf50;
+  transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition for color changes */
 }
 
 .incorrect {
   color: #f44336;
+  transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition for color changes */
 }
 
 .inputArea {
@@ -58,10 +68,6 @@
   outline: none;
   z-index: 2;
   cursor: text; /* Ensure the cursor changes to text when hovering */
-}
-
-.activeWord {
-  background-color: rgba(0, 123, 255, 0.2);
 }
 
 .activeChar {
@@ -83,6 +89,7 @@
   height: 1em;
   background-color: orange; /* Cursor color */
   animation: blink 1s step-end infinite;
+  transition: background-color 0.3s ease; /* Smooth transition for cursor color */
 }
 
 @keyframes blink {
