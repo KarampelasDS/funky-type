@@ -3,9 +3,9 @@ import styles from "./typingbox.module.css";
 
 export default function TypingBox() {
   // State to hold the full text the user will type
-  const [totalText] = useState(
-    "Child think mother is my protector who  from all bad , but what is , if mother herself Yo child life in risk by break child swear continuously, is it not betrayal to that child and child feelings ? What is the meaning of love ? That kiss every day and say I love you ? Or cooking good food and buy new dress and toys ? Take care of life ,or love is mean to respect feelings ? If it is love then why there is no fear of life and why there is no respect of feelings.Doesn't matter its your beloved or child'Respect of feelings is The love."
-  );
+  const [totalText, setTotalText] = useState("Loading...");
+
+  const [author, setAuthor] = useState("Unknown Author");
 
   // Split the full text into an array of words
   const words = totalText.split(" ");
@@ -32,11 +32,30 @@ export default function TypingBox() {
   // Ref to track the input field for focusing
   const inputRef = useRef(null);
 
+  const getQuote = async () => {
+    const url = "https://thequoteshub.com/api/random-quote?format=json";
+
+    const response = await fetch(url);
+
+    const myJson = await response.json(); // Parse the JSON response
+
+    console.log(myJson); // Log the quote to the console
+
+    setTotalText(myJson.text); // Set the quote as the new text
+    setAuthor(myJson.author); // Set the author of the quote
+
+    const newWords = myJson.text.split(" "); // Split the new text into words
+    setTypedWords(newWords.map((word) => Array(word.length).fill(null))); // Reinitialize typedWords
+    setActiveWord(0); // Reset active word
+    setActiveChar(0); // Reset active character
+  };
+
   // Focus the input field on page load
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
+    getQuote();
   }, []);
 
   // Function to handle user input
@@ -156,6 +175,7 @@ export default function TypingBox() {
     setWpm(0); // Reset WPM
     setAccuracy(0); // Reset accuracy
     setMistakes(0); // Reset mistakes
+    getQuote(); // Fetch a new quote
 
     // Focus the input field after resetting with a slight delay
     setTimeout(() => {
@@ -227,6 +247,7 @@ export default function TypingBox() {
       ) : (
         // Display results when the test is completed
         <div className={styles.results}>
+          <h1>You just typed a quote by {author}</h1>
           <h1>WPM: {wpm}</h1>
           <h1>Accuracy: {accuracy}%</h1>
           <button className={styles.retryButton} onClick={retryTest}>
