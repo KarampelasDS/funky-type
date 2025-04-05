@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { IoReload } from "react-icons/io5";
 import styles from "./typingbox.module.css";
 
 export default function TypingBox() {
@@ -189,60 +190,65 @@ export default function TypingBox() {
   return (
     <div className={styles.container}>
       {!isCompleted ? (
-        <div className={styles.typingbox}>
-          <div className={styles.staticText}>
-            {words.map((word, wordIndex) => (
-              <span
-                key={wordIndex}
-                className={
-                  !isCompleted && activeWord === wordIndex
-                    ? styles.activeWord // Highlight the active word
-                    : ""
-                }
-              >
-                {word.split("").map((letter, charIndex) => {
-                  let charClass = "";
-
-                  // Apply styles for correct and incorrect characters
-                  if (typedWords[wordIndex][charIndex] === true) {
-                    charClass = styles.correctChar; // Correctly typed characters
-                  } else if (typedWords[wordIndex][charIndex] === false) {
-                    charClass = styles.incorrectChar; // Incorrectly typed characters
+        <div className={styles.typingboxContainer}>
+          <div className={styles.typingbox}>
+            <div className={styles.staticText}>
+              {words.map((word, wordIndex) => (
+                <span
+                  key={wordIndex}
+                  className={
+                    !isCompleted && activeWord === wordIndex
+                      ? styles.activeWord // Highlight the active word
+                      : ""
                   }
+                >
+                  {word.split("").map((letter, charIndex) => {
+                    let charClass = "";
 
-                  return (
-                    <span key={charIndex} className={charClass}>
-                      {/* Render the cursor before the current character */}
-                      {!isCompleted &&
-                        isFocused &&
-                        activeWord === wordIndex &&
-                        activeChar === charIndex && (
-                          <span className={styles.cursor}></span>
-                        )}
-                      {letter}
-                    </span>
-                  );
-                })}
-                {/* Render the cursor at the end of the word */}
-                {!isCompleted &&
-                  isFocused &&
-                  activeWord === wordIndex &&
-                  activeChar === word.length && (
-                    <span className={styles.cursor}></span>
-                  )}{" "}
-              </span>
-            ))}
+                    // Apply styles for correct and incorrect characters
+                    if (typedWords[wordIndex][charIndex] === true) {
+                      charClass = styles.correctChar; // Correctly typed characters
+                    } else if (typedWords[wordIndex][charIndex] === false) {
+                      charClass = styles.incorrectChar; // Incorrectly typed characters
+                    }
+
+                    return (
+                      <span key={charIndex} className={charClass}>
+                        {/* Render the cursor before the current character */}
+                        {!isCompleted &&
+                          isFocused &&
+                          activeWord === wordIndex &&
+                          activeChar === charIndex && (
+                            <span className={styles.cursor}></span>
+                          )}
+                        {letter}
+                      </span>
+                    );
+                  })}
+                  {/* Render the cursor at the end of the word */}
+                  {!isCompleted &&
+                    isFocused &&
+                    activeWord === wordIndex &&
+                    activeChar === word.length && (
+                      <span className={styles.cursor}></span>
+                    )}{" "}
+                </span>
+              ))}
+            </div>
+            {/* Invisible input to capture user input */}
+            <input
+              ref={inputRef} // Attach the ref to the input field
+              className={styles.inputArea}
+              type="text"
+              onKeyDown={handleInput}
+              onFocus={() => setIsFocused(true)} // Set focus state to true
+              onBlur={() => setIsFocused(false)} // Set focus state to false
+              value={""}
+            />
           </div>
-          {/* Invisible input to capture user input */}
-          <input
-            ref={inputRef} // Attach the ref to the input field
-            className={styles.inputArea}
-            type="text"
-            onKeyDown={handleInput}
-            onFocus={() => setIsFocused(true)} // Set focus state to true
-            onBlur={() => setIsFocused(false)} // Set focus state to false
-            value={""}
-          />
+          <button className={styles.retryButton} onClick={retryTest}>
+            <IoReload size={40} />
+          </button>
         </div>
       ) : (
         // Display results when the test is completed
@@ -251,7 +257,7 @@ export default function TypingBox() {
           <h1>WPM: {wpm}</h1>
           <h1>Accuracy: {accuracy}%</h1>
           <button className={styles.retryButton} onClick={retryTest}>
-            Retry
+            <IoReload size={40} />
           </button>
         </div>
       )}
