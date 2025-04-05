@@ -4,7 +4,7 @@ import styles from "./typingbox.module.css";
 export default function TypingBox() {
   // State to hold the full text the user will type
   const [totalText] = useState(
-    "If you want to build a ship, don't drum up the people to gather wood, divide the work, and give orders. Instead, teach them to yearn for the vast endless sea."
+    "Child think mother is my protector who  from all bad , but what is , if mother herself Yo child life in risk by break child swear continuously, is it not betrayal to that child and child feelings ? What is the meaning of love ? That kiss every day and say I love you ? Or cooking good food and buy new dress and toys ? Take care of life ,or love is mean to respect feelings ? If it is love then why there is no fear of life and why there is no respect of feelings.Doesn't matter its your beloved or child'Respect of feelings is The love."
   );
 
   // Split the full text into an array of words

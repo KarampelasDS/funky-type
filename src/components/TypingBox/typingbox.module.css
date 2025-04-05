@@ -9,7 +9,7 @@
   position: relative;
   background-color: var(--typing-box);
   min-width: 90%;
-  min-height: 10rem;
+  min-height: 10rem; /* Ensure a minimum height */
   border-radius: 20px;
   padding: 2rem;
   overflow: hidden;
@@ -20,15 +20,14 @@
   flex-direction: column; /* Ensure consistent vertical alignment */
   justify-content: space-between; /* Prevent shifting when lines wrap */
   max-width: 60rem; /* Set a fixed width to prevent dynamic wrapping */
-  height: 15rem; /* Ensure consistent height */
-  overflow: hidden; /* Prevent overflow */
+  height: auto; /* Automatically adjust height to fit content */
 }
 
 .staticText {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  right: 2rem;
+  position: relative; /* Changed from absolute to relative */
+  top: 0;
+  left: 0;
+  right: 0;
   color: #949494;
   white-space: pre-wrap;
   pointer-events: none;
@@ -36,7 +35,7 @@
   font-family: inherit;
   min-height: 10rem; /* Ensure consistent height to prevent layout shifts */
   visibility: visible; /* Ensure text is always rendered */
-  height: 100%; /* Match the height of the typing box */
+  height: auto; /* Automatically adjust height to fit content */
   line-height: 1.5; /* Match the line height of the typing box */
   word-wrap: break-word; /* Break long words to prevent overflow */
   overflow-wrap: break-word; /* Ensure long words wrap properly */
