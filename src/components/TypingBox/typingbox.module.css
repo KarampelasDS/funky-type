@@ -103,18 +103,25 @@
 }
 
 .inputArea {
-  caret-color: transparent;
+  caret-color: transparent; /* Hide the caret */
   position: absolute; /* Ensure it doesn't affect layout */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent;
+  background: transparent; /* Transparent background */
   color: transparent; /* Hide the text inside the input */
-  border: none;
-  outline: none;
+  border: none; /* Remove border */
+  outline: none; /* Remove focus outline */
   z-index: 2;
   cursor: text; /* Ensure the cursor changes to text when hovering */
+  box-shadow: none; /* Remove default focus outline */
+  -webkit-box-shadow: none; /* Remove focus outline in WebKit browsers */
+  -moz-box-shadow: none; /* Remove focus outline in Mozilla browsers */
+  user-select: none; /* Prevent text selection */
+  -webkit-user-select: none; /* Prevent text selection in WebKit browsers */
+  -moz-user-select: none; /* Prevent text selection in Mozilla browsers */
+  -ms-user-select: none; /* Prevent text selection in IE/Edge */
 }
 
 .activeChar {
@@ -143,6 +150,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  padding: 2rem;
   gap: 1rem;
   margin-top: 1rem;
   font-size: 1.5rem;

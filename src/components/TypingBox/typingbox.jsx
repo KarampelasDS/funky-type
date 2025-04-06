@@ -30,6 +30,9 @@ export default function TypingBox() {
   // State to track whether the input field is focused
   const [isFocused, setIsFocused] = useState(false);
 
+  // State to track the current input value
+  const [inputValue, setInputValue] = useState("");
+
   // Ref to track the input field for focusing
   const inputRef = useRef(null);
 
@@ -59,24 +62,35 @@ export default function TypingBox() {
     getQuote();
   }, []);
 
-  // Function to handle user input
-  const handleInput = (e) => {
-    // Start the timer only when the user types their first character
-    if (!startTime) {
-      setStartTime(Date.now());
-    }
-
+  // Function to handle user input (including backspace detection)
+  const handleInputChange = (e) => {
+    const newValue = e.target.value; // Get the new input value
     const currentWord = words[activeWord]; // Get the current word
     const currentChar =
       activeChar < currentWord.length ? currentWord[activeChar] : " "; // Handle spaces between words
 
-    // Ignore non-character keys (e.g., Shift, Ctrl, etc.)
-    if (e.key.length > 1 && e.key !== "Backspace" && e.key !== " ") {
-      return;
+    // Start the timer only when the user types their first character
+    if (!startTime && newValue.length > 0) {
+      setStartTime(Date.now());
     }
 
-    // If the user types the correct character (including spaces)
-    if (e.key === currentChar) {
+    if (newValue.length < inputValue.length) {
+      // Handle backspace input
+      if (activeChar > 0) {
+        setTypedWords((prev) => {
+          const updated = [...prev];
+          updated[activeWord][activeChar - 1] = null; // Clear the last character
+          return updated;
+        });
+
+        setActiveChar((prev) => prev - 1); // Move back one character
+      } else if (activeWord > 0) {
+        // Move back to the previous word
+        setActiveWord((prev) => prev - 1);
+        setActiveChar(words[activeWord - 1].length); // Set character index to the end of the previous word
+      }
+    } else if (newValue[newValue.length - 1] === currentChar) {
+      // If the user types the correct character (including spaces)
       setTypedWords((prev) => {
         const updated = [...prev];
         if (activeChar < currentWord.length) {
@@ -87,7 +101,7 @@ export default function TypingBox() {
 
       if (activeChar < currentWord.length) {
         setActiveChar((prev) => prev + 1); // Move to the next character
-      } else if (e.key === " ") {
+      } else if (newValue[newValue.length - 1] === " ") {
         // Handle spacebar input
         if (activeWord + 1 < words.length) {
           setActiveWord((prev) => prev + 1); // Move to the next word
@@ -102,21 +116,6 @@ export default function TypingBox() {
       ) {
         setIsCompleted(true); // Mark the test as completed
         calculateResults(); // Calculate WPM and accuracy
-      }
-    } else if (e.key === "Backspace") {
-      // Handle backspace input
-      if (activeChar > 0) {
-        setTypedWords((prev) => {
-          const updated = [...prev];
-          updated[activeWord][activeChar - 1] = null; // Clear the last character
-          return updated;
-        });
-
-        setActiveChar((prev) => prev - 1); // Move back one character
-      } else if (activeWord > 0) {
-        // Move back to the previous word
-        setActiveWord((prev) => prev - 1);
-        setActiveChar(words[activeWord - 1].length); // Set character index to the end of the previous word
       }
     } else {
       // If the user types an incorrect character
@@ -134,6 +133,8 @@ export default function TypingBox() {
         setActiveChar((prev) => prev + 1); // Move to the next character
       }
     }
+
+    setInputValue(newValue); // Update the input value
   };
 
   // Function to calculate WPM and accuracy
@@ -176,6 +177,7 @@ export default function TypingBox() {
     setWpm(0); // Reset WPM
     setAccuracy(0); // Reset accuracy
     setMistakes(0); // Reset mistakes
+    setInputValue(""); // Reset input value
     getQuote(); // Fetch a new quote
 
     // Focus the input field after resetting with a slight delay
@@ -235,15 +237,15 @@ export default function TypingBox() {
                 </span>
               ))}
             </div>
-            {/* Invisible input to capture user input */}
+            {/* Controlled input to capture user input */}
             <input
               ref={inputRef} // Attach the ref to the input field
               className={styles.inputArea}
               type="text"
-              onKeyDown={handleInput}
+              value={inputValue} // Controlled input value
+              onChange={handleInputChange} // Handle input changes
               onFocus={() => setIsFocused(true)} // Set focus state to true
               onBlur={() => setIsFocused(false)} // Set focus state to false
-              value={""}
             />
           </div>
           <button className={styles.retryButton} onClick={retryTest}>
