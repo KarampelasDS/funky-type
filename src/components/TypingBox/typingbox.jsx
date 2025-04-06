@@ -3,58 +3,40 @@ import { IoReload } from "react-icons/io5";
 import styles from "./typingbox.module.css";
 
 export default function TypingBox() {
-  // State to hold the full text the user will type
   const [totalText, setTotalText] = useState("Loading...");
-
   const [author, setAuthor] = useState("Unknown Author");
-
-  // Split the full text into an array of words
   const words = totalText.split(" ");
-
-  // State to track the current word and character the user is typing
-  const [activeWord, setActiveWord] = useState(0); // Index of the current word
-  const [activeChar, setActiveChar] = useState(0); // Index of the current character in the word
-
-  // State to track the user's typed characters for each word
+  const [activeWord, setActiveWord] = useState(0);
+  const [activeChar, setActiveChar] = useState(0);
   const [typedWords, setTypedWords] = useState(
-    words.map((word) => Array(word.length).fill(null)) // Initialize with null for each character
+    words.map((word) => Array(word.length).fill(null))
   );
-
-  // State to track the typing test's progress and results
-  const [startTime, setStartTime] = useState(null); // When the typing test starts
-  const [isCompleted, setIsCompleted] = useState(false); // Whether the test is completed
-  const [wpm, setWpm] = useState(0); // Words per minute
-  const [accuracy, setAccuracy] = useState(0); // Accuracy percentage
-  const [mistakes, setMistakes] = useState(0); // Total mistakes made
-
-  // State to track whether the input field is focused
+  const [startTime, setStartTime] = useState(null);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [wpm, setWpm] = useState(0);
+  const [accuracy, setAccuracy] = useState(0);
+  const [mistakes, setMistakes] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
-
-  // State to track the current input value
   const [inputValue, setInputValue] = useState("");
-
-  // Ref to track the input field for focusing
   const inputRef = useRef(null);
+
+  const normalizeText = (text) => {
+    return text.replace(/’/g, "'").replace(/\s+/g, " ");
+  };
 
   const getQuote = async () => {
     const url = "https://thequoteshub.com/api/random-quote?format=json";
-
     const response = await fetch(url);
-
-    const myJson = await response.json(); // Parse the JSON response
-
-    console.log(myJson); // Log the quote to the console
-
-    setTotalText(myJson.text); // Set the quote as the new text
-    setAuthor(myJson.author); // Set the author of the quote
-
-    const newWords = myJson.text.split(" "); // Split the new text into words
-    setTypedWords(newWords.map((word) => Array(word.length).fill(null))); // Reinitialize typedWords
-    setActiveWord(0); // Reset active word
-    setActiveChar(0); // Reset active character
+    const myJson = await response.json();
+    const normalizedText = normalizeText(myJson.text);
+    setTotalText(normalizedText);
+    setAuthor(myJson.author);
+    const newWords = normalizedText.split(" ");
+    setTypedWords(newWords.map((word) => Array(word.length).fill(null)));
+    setActiveWord(0);
+    setActiveChar(0);
   };
 
-  // Focus the input field on page load
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -62,103 +44,79 @@ export default function TypingBox() {
     getQuote();
   }, []);
 
-  // Function to handle user input (including backspace detection)
   const handleInputChange = (e) => {
-    const newValue = e.target.value; // Get the new input value
-    const currentWord = words[activeWord]; // Get the current word
+    const newValue = normalizeText(e.target.value);
+    const currentWord = words[activeWord];
     const currentChar =
-      activeChar < currentWord.length ? currentWord[activeChar] : " "; // Handle spaces between words
-
-    // Start the timer only when the user types their first character
+      activeChar < currentWord.length ? currentWord[activeChar] : " ";
     if (!startTime && newValue.length > 0) {
       setStartTime(Date.now());
     }
-
     if (newValue.length < inputValue.length) {
-      // Handle backspace input
       if (activeChar > 0) {
         setTypedWords((prev) => {
           const updated = [...prev];
-          updated[activeWord][activeChar - 1] = null; // Clear the last character
+          updated[activeWord][activeChar - 1] = null;
           return updated;
         });
-
-        setActiveChar((prev) => prev - 1); // Move back one character
+        setActiveChar((prev) => prev - 1);
       } else if (activeWord > 0) {
-        // Move back to the previous word
         setActiveWord((prev) => prev - 1);
-        setActiveChar(words[activeWord - 1].length); // Set character index to the end of the previous word
+        setActiveChar(words[activeWord - 1].length);
       }
     } else if (newValue[newValue.length - 1] === currentChar) {
-      // If the user types the correct character (including spaces)
       setTypedWords((prev) => {
         const updated = [...prev];
         if (activeChar < currentWord.length) {
-          updated[activeWord][activeChar] = true; // Mark the character as correct
+          updated[activeWord][activeChar] = true;
         }
         return updated;
       });
-
       if (activeChar < currentWord.length) {
-        setActiveChar((prev) => prev + 1); // Move to the next character
+        setActiveChar((prev) => prev + 1);
       } else if (newValue[newValue.length - 1] === " ") {
-        // Handle spacebar input
         if (activeWord + 1 < words.length) {
-          setActiveWord((prev) => prev + 1); // Move to the next word
-          setActiveChar(0); // Reset character index for the new word
+          setActiveWord((prev) => prev + 1);
+          setActiveChar(0);
         }
       }
-
-      // Check if the current word is completed
       if (
         activeChar + 1 === currentWord.length &&
         activeWord + 1 === words.length
       ) {
-        setIsCompleted(true); // Mark the test as completed
-        calculateResults(); // Calculate WPM and accuracy
+        setIsCompleted(true);
+        calculateResults();
       }
     } else {
-      // If the user types an incorrect character
-      setMistakes((prev) => prev + 1); // Increment the mistake counter
-
+      setMistakes((prev) => prev + 1);
       setTypedWords((prev) => {
         const updated = [...prev];
         if (activeChar < currentWord.length) {
-          updated[activeWord][activeChar] = false; // Mark the character as incorrect
+          updated[activeWord][activeChar] = false;
         }
         return updated;
       });
-
       if (activeChar < currentWord.length) {
-        setActiveChar((prev) => prev + 1); // Move to the next character
+        setActiveChar((prev) => prev + 1);
       }
     }
-
-    setInputValue(newValue); // Update the input value
+    setInputValue(newValue);
   };
 
-  // Function to calculate WPM and accuracy
   const calculateResults = () => {
-    const endTime = Date.now(); // Get the end time
-    const timeInMinutes = (endTime - startTime) / 60000; // Convert time to minutes
-
-    // Calculate WPM
-    const totalWordsTyped = words.slice(0, activeWord + 1).length; // Total words typed
+    const endTime = Date.now();
+    const timeInMinutes = (endTime - startTime) / 60000;
+    const totalWordsTyped = words.slice(0, activeWord + 1).length;
     const calculatedWpm = Math.round(totalWordsTyped / timeInMinutes);
     setWpm(calculatedWpm);
-
-    // Calculate accuracy
     let totalTypedChars = 0;
-
     typedWords.forEach((word) => {
       word.forEach((char) => {
         if (char !== null) {
-          totalTypedChars++; // Count all typed characters
+          totalTypedChars++;
         }
       });
     });
-
-    // Ensure accuracy is never negative
     const correctChars = totalTypedChars - mistakes;
     const calculatedAccuracy = Math.max(
       Math.round((correctChars / totalTypedChars) * 100),
@@ -167,20 +125,17 @@ export default function TypingBox() {
     setAccuracy(calculatedAccuracy);
   };
 
-  // Function to reset the test
   const retryTest = () => {
-    setActiveWord(0); // Reset word index
-    setActiveChar(0); // Reset character index
-    setTypedWords(words.map((word) => Array(word.length).fill(null))); // Reset typedWords
-    setStartTime(null); // Reset start time
-    setIsCompleted(false); // Reset completion status
-    setWpm(0); // Reset WPM
-    setAccuracy(0); // Reset accuracy
-    setMistakes(0); // Reset mistakes
-    setInputValue(""); // Reset input value
-    getQuote(); // Fetch a new quote
-
-    // Focus the input field after resetting with a slight delay
+    setActiveWord(0);
+    setActiveChar(0);
+    setTypedWords(words.map((word) => Array(word.length).fill(null)));
+    setStartTime(null);
+    setIsCompleted(false);
+    setWpm(0);
+    setAccuracy(0);
+    setMistakes(0);
+    setInputValue("");
+    getQuote();
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
@@ -188,7 +143,6 @@ export default function TypingBox() {
     }, 0);
   };
 
-  // Render the typing box and results
   return (
     <div className={styles.container}>
       {!isCompleted ? (
@@ -200,23 +154,19 @@ export default function TypingBox() {
                   key={wordIndex}
                   className={
                     !isCompleted && activeWord === wordIndex
-                      ? styles.activeWord // Highlight the active word
+                      ? styles.activeWord
                       : ""
                   }
                 >
                   {word.split("").map((letter, charIndex) => {
                     let charClass = "";
-
-                    // Apply styles for correct and incorrect characters
                     if (typedWords[wordIndex][charIndex] === true) {
-                      charClass = styles.correctChar; // Correctly typed characters
+                      charClass = styles.correctChar;
                     } else if (typedWords[wordIndex][charIndex] === false) {
-                      charClass = styles.incorrectChar; // Incorrectly typed characters
+                      charClass = styles.incorrectChar;
                     }
-
                     return (
                       <span key={charIndex} className={charClass}>
-                        {/* Render the cursor before the current character */}
                         {!isCompleted &&
                           isFocused &&
                           activeWord === wordIndex &&
@@ -227,7 +177,6 @@ export default function TypingBox() {
                       </span>
                     );
                   })}
-                  {/* Render the cursor at the end of the word */}
                   {!isCompleted &&
                     isFocused &&
                     activeWord === wordIndex &&
@@ -237,15 +186,16 @@ export default function TypingBox() {
                 </span>
               ))}
             </div>
-            {/* Controlled input to capture user input */}
             <input
-              ref={inputRef} // Attach the ref to the input field
+              ref={inputRef}
               className={styles.inputArea}
               type="text"
-              value={inputValue} // Controlled input value
-              onChange={handleInputChange} // Handle input changes
-              onFocus={() => setIsFocused(true)} // Set focus state to true
-              onBlur={() => setIsFocused(false)} // Set focus state to false
+              value={inputValue}
+              onChange={handleInputChange}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              spellCheck="false"
+              autoComplete="off"
             />
           </div>
           <button className={styles.retryButton} onClick={retryTest}>
@@ -254,7 +204,6 @@ export default function TypingBox() {
           </button>
         </div>
       ) : (
-        // Display results when the test is completed
         <div className={styles.results}>
           <h1>You just typed a quote by {author}</h1>
           <h1>WPM: {wpm}</h1>
