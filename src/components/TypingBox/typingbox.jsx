@@ -248,6 +248,7 @@ export default function TypingBox() {
           </div>
           <button className={styles.retryButton} onClick={retryTest}>
             <IoReload size={40} />
+            <span className={styles.retryTooltip}>Refresh</span>
           </button>
         </div>
       ) : (
@@ -258,6 +259,7 @@ export default function TypingBox() {
           <h1>Accuracy: {accuracy}%</h1>
           <button className={styles.retryButton} onClick={retryTest}>
             <IoReload size={40} />
+            <span className={styles.retryTooltip}>Play Again</span>
           </button>
         </div>
       )}

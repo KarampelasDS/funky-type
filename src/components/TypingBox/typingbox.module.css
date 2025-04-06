@@ -32,6 +32,45 @@
   height: auto; /* Automatically adjust height to fit content */
 }
 
+.retryTooltip {
+  display: none;
+}
+
+.retryButton:hover {
+  .retryTooltip {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: black;
+    padding: 0.5em;
+    font-size: 1rem;
+    border-radius: 10px;
+    top: 2px;
+  }
+  .retryTooltip::before {
+    content: "";
+    position: absolute;
+    bottom: 100%; /* Position the triangle above the tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent; /* Black triangle pointing down */
+  }
+}
+
+.retryTooltip::before {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* Position the triangle above the tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent; /* Black triangle pointing down */
+}
+
 .staticText {
   position: relative; /* Changed from absolute to relative */
   top: 0;
@@ -112,6 +151,11 @@
 
 .retryButton {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
 }
 
 @keyframes blink {
