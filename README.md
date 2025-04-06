@@ -1,40 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Funky Type
 
-## Getting Started
+Funky Type is a fun and interactive typing test application designed to help you improve your typing speed and accuracy. Type through random quotes, track your progress, and challenge yourself to become a better typist!
 
-First, run the development server:
+## Play here
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+You can use the app [here](test)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- **Random Quotes**: Practice typing with randomly fetched quotes from an API.
+- **Typing Metrics**: Get feedback on your Words Per Minute (WPM) and accuracy.
+- **Mistake Tracking**: See your mistakes and improve your typing skills.
+- **Mobile-Friendly**: Fully responsive design for seamless use on both desktop and mobile devices.
+- **Retry Option**: Easily restart the test and try again with a new quote.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Technologies Used
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+- **Frontend**: [React](https://reactjs.org) with [Next.js](https://nextjs.org)
+- **Styling**: CSS Modules
+- **Icons**: [React Icons](https://react-icons.github.io/react-icons/)
+- **API**: Random quotes fetched from [The Quotes Hub](https://thequoteshub.com)
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contributing
 
-## Learn More
+Contributions are welcome! If you'd like to contribute to FunkyType, please follow these steps:
 
-To learn more about Next.js, take a look at the following resources:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes and push them to your fork.
+4. Submit a pull request with a detailed description of your changes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## Deploy on Vercel
+## Acknowledgments
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [The Quotes Hub](https://thequoteshub.com) for providing the random quotes API.
+- [Next.js](https://nextjs.org) for the amazing framework.
+- [React Icons](https://react-icons.github.io/react-icons/) for the beautiful icons.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+Enjoy typing with FunkyType!
