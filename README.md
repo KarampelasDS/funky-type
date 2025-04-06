@@ -4,7 +4,7 @@ Funky Type is a fun and interactive typing test application designed to help you
 
 ## Play here
 
-You can use the app [here](test)
+You can use the app [here](https://funky-type.vercel.app)
 
 ## Features
 

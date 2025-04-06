@@ -9,7 +9,7 @@ export default function Topbar() {
     <div className={styles.container}>
       <Image
         className={styles.logo}
-        src="/logo.png"
+        src="/Logo.png"
         alt="logo"
         width={150}
         height={150}
