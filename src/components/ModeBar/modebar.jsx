@@ -9,46 +9,77 @@ import { FaQuoteRight } from "react-icons/fa6";
 import { FaWrench } from "react-icons/fa";
 
 // React
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Subbar from "../SubBar/subbar";
+
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { setMode } from "../../store/mode";
 
 export default function ModeBar() {
   const [selected, setSelected] = useState("Time");
+
+  const mode = useSelector((state) => state.mode.value);
+  const dispatch = useDispatch();
+
+  function handleModeChange() {
+    dispatch(setMode(selected));
+  }
+
+  useEffect(() => {
+    handleModeChange();
+  }, [selected]);
+
   return (
     <div className={styles.container}>
       <div className={styles.modebar}>
         <ul>
           <li
             className={selected === "Time" ? styles.selected : ""}
-            onClick={() => setSelected("Time")}
+            onClick={() => {
+              setSelected("Time");
+              handleModeChange();
+            }}
           >
             <TbClockHour3Filled />
             Time
           </li>
           <li
             className={selected === "Words" ? styles.selected : ""}
-            onClick={() => setSelected("Words")}
+            onClick={() => {
+              setSelected("Words");
+              handleModeChange();
+            }}
           >
             <LuBookA />
             Words
           </li>
           <li
             className={selected === "Numbers" ? styles.selected : ""}
-            onClick={() => setSelected("Numbers")}
+            onClick={() => {
+              setSelected("Numbers");
+              handleModeChange();
+            }}
           >
             <HiCalculator />
             Numbers
           </li>
           <li
             className={selected === "Quotes" ? styles.selected : ""}
-            onClick={() => setSelected("Quotes")}
+            onClick={() => {
+              setSelected("Quotes");
+              handleModeChange();
+            }}
           >
             <FaQuoteRight />
             Quotes
           </li>
           <li
             className={selected === "Custom" ? styles.selected : ""}
-            onClick={() => setSelected("Custom")}
+            onClick={() => {
+              setSelected("Custom");
+              handleModeChange();
+            }}
           >
             <FaWrench />
             Custom
@@ -105,6 +136,7 @@ export default function ModeBar() {
           }
         })()}
       </div>
+      <h1>{mode}</h1>
     </div>
   );
 }

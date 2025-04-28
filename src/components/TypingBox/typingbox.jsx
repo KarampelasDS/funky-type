@@ -9,6 +9,7 @@ export default function TypingBox() {
   const [authorImg, setAuthorImg] = useState(
     "https://i.imgur.com/ZvQJPOy.jpeg"
   );
+  const [authorImgExists, setAuthorImgExists] = useState(false);
   const words = totalText.split(" ");
   const [activeWord, setActiveWord] = useState(0);
   const [activeChar, setActiveChar] = useState(0);
@@ -42,6 +43,7 @@ export default function TypingBox() {
     setTotalText(normalizedText);
     setAuthor(myJson.author);
     setAuthorImg(myJson.author_img);
+    checkImage(myJson.author_img);
     const newWords = normalizedText.split(" ");
     setTypedWords(newWords.map((word) => Array(word.length).fill(null)));
     setActiveWord(0);
@@ -114,6 +116,19 @@ export default function TypingBox() {
     setInputValue(newValue);
   };
 
+  async function checkImage(url) {
+    try {
+      const response = await fetch(url, { method: "HEAD" });
+      if (response.ok) {
+        setAuthorImgExists(true);
+      } else {
+        setAuthorImgExists(false);
+      }
+    } catch (error) {
+      setAuthorImgExists(false);
+    }
+  }
+
   const calculateResults = () => {
     const endTime = Date.now();
     const timeInMinutes = (endTime - startTime) / 60000;
@@ -137,6 +152,7 @@ export default function TypingBox() {
   };
 
   const retryTest = () => {
+    setTotalText("Loading...");
     setActiveWord(0);
     setActiveChar(0);
     setTypedWords(words.map((word) => Array(word.length).fill(null)));
@@ -217,7 +233,14 @@ export default function TypingBox() {
       ) : (
         <div className={styles.results}>
           <h1>You just typed a quote by {author}</h1>
-          <Image src={authorImg} width={100} height={100} alt="Missing image" />
+          {authorImgExists && (
+            <Image
+              src={authorImg}
+              width={100}
+              height={100}
+              alt="Author's image"
+            />
+          )}
           <h1>WPM: {wpm}</h1>
           <h1>Accuracy: {accuracy}%</h1>
           <button className={styles.retryButton} onClick={retryTest}>
