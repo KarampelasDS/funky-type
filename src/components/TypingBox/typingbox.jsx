@@ -36,8 +36,7 @@ export default function TypingBox() {
   };
 
   const getQuote = async () => {
-    const url = "https://api.hamatim.com/quote";
-    const response = await fetch(url);
+    const response = await fetch("/api/quote");
     const myJson = await response.json();
     const normalizedText = normalizeText(myJson.text);
     setTotalText(normalizedText);
@@ -218,12 +217,7 @@ export default function TypingBox() {
       ) : (
         <div className={styles.results}>
           <h1>You just typed a quote by {author}</h1>
-          <Image
-            src={authorImg}
-            width={100}
-            height={100}
-            alt="Author's image"
-          />
+          <Image src={authorImg} width={100} height={100} alt="Missing image" />
           <h1>WPM: {wpm}</h1>
           <h1>Accuracy: {accuracy}%</h1>
           <button className={styles.retryButton} onClick={retryTest}>
