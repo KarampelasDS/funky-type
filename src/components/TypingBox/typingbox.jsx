@@ -36,7 +36,7 @@ export default function TypingBox() {
   };
 
   const getQuote = async () => {
-    const url = "https://corsproxy.io/?url=https://api.hamatim.com/quote";
+    const url = "https://api.hamatim.com/quote";
     const response = await fetch(url);
     const myJson = await response.json();
     const normalizedText = normalizeText(myJson.text);
