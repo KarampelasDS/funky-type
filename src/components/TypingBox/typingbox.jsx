@@ -1,10 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { IoReload } from "react-icons/io5";
 import styles from "./typingbox.module.css";
+import Image from "next/image";
 
 export default function TypingBox() {
   const [totalText, setTotalText] = useState("Loading...");
   const [author, setAuthor] = useState("Unknown Author");
+  const [authorImg, setAuthorImg] = useState(
+    "https://i.imgur.com/ZvQJPOy.jpeg"
+  );
   const words = totalText.split(" ");
   const [activeWord, setActiveWord] = useState(0);
   const [activeChar, setActiveChar] = useState(0);
@@ -21,16 +25,24 @@ export default function TypingBox() {
   const inputRef = useRef(null);
 
   const normalizeText = (text) => {
-    return text.replace(/’/g, "'").replace(/\s+/g, " ");
+    return text
+      .replace(/’/g, "'")
+      .replace(/\s+/g, " ")
+      .replace(/“/g, '"')
+      .replace(/”/g, '"')
+      .replace(/–/g, "-")
+      .replace(/—/g, "-")
+      .replace(/…/g, "...");
   };
 
   const getQuote = async () => {
-    const url = "https://thequoteshub.com/api/random-quote?format=json";
+    const url = "https://corsproxy.io/?url=https://api.hamatim.com/quote";
     const response = await fetch(url);
     const myJson = await response.json();
     const normalizedText = normalizeText(myJson.text);
     setTotalText(normalizedText);
     setAuthor(myJson.author);
+    setAuthorImg(myJson.author_img);
     const newWords = normalizedText.split(" ");
     setTypedWords(newWords.map((word) => Array(word.length).fill(null)));
     setActiveWord(0);
@@ -206,6 +218,12 @@ export default function TypingBox() {
       ) : (
         <div className={styles.results}>
           <h1>You just typed a quote by {author}</h1>
+          <Image
+            src={authorImg}
+            width={100}
+            height={100}
+            alt="Author's image"
+          />
           <h1>WPM: {wpm}</h1>
           <h1>Accuracy: {accuracy}%</h1>
           <button className={styles.retryButton} onClick={retryTest}>
