@@ -19,7 +19,7 @@ You can use the app [here](https://funky-type.vercel.app)
 - **Frontend**: [React](https://reactjs.org) with [Next.js](https://nextjs.org)
 - **Styling**: CSS Modules
 - **Icons**: [React Icons](https://react-icons.github.io/react-icons/)
-- **API**: Random quotes fetched from [The Quotes Hub](https://thequoteshub.com)
+- **API**: Random quotes fetched from [FavQs](https://favqs.com/api/)
 
 ## Contributing
 
@@ -30,13 +30,9 @@ Contributions are welcome! If you'd like to contribute to FunkyType, please foll
 3. Commit your changes and push them to your fork.
 4. Submit a pull request with a detailed description of your changes.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
-- [The Quotes Hub](https://thequoteshub.com) for providing the random quotes API.
+- [FavQs](https://favqs.com/api/) for providing the random quotes API.
 - [Next.js](https://nextjs.org) for the amazing framework.
 - [React Icons](https://react-icons.github.io/react-icons/) for the beautiful icons.
 
