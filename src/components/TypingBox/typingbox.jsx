@@ -39,7 +39,7 @@ export default function TypingBox() {
   const getQuote = async () => {
     const response = await fetch("/api/quote");
     const myJson = await response.json();
-    const normalizedText = normalizeText(myJson.text);
+    const normalizedText = normalizeText(myJson.body);
     setTotalText(normalizedText);
     setAuthor(myJson.author);
     setAuthorImg(myJson.author_img);
@@ -220,7 +220,7 @@ export default function TypingBox() {
       ) : (
         <div className={styles.results}>
           <h1>You just typed a quote by {author}</h1>
-          {authorImgExists && (
+          {/*authorImgExists && (
             <Image
               src={`/api/proxy-image?url=${encodeURIComponent(authorImg)}`}
               width={100}
@@ -228,7 +228,8 @@ export default function TypingBox() {
               alt="Author's image"
               onError={() => setAuthorImgExists(false)}
             />
-          )}
+            
+          )*/}
           <h1>WPM: {wpm}</h1>
           <h1>Accuracy: {accuracy}%</h1>
           <button className={styles.retryButton} onClick={retryTest}>
